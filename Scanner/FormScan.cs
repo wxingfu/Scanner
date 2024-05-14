@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
+using System.IO;
 using System.Windows.Forms;
 using log4net;
+using Scanner.Toolkit;
 using Scanner.Twain;
 
 namespace Scanner
@@ -12,9 +15,9 @@ namespace Scanner
 
         static ILog log = LogManager.GetLogger(typeof(FormScan));
 
-        private static string fileBasePath = @"E:\\scanner\\";
+        private static string fileBasePath = FilePath.PathCombine(FilePath.GetAppPath(), "\\image");
 
-        private static string imageSuffix = ".tiff";
+        private static string imageSuffix = FilePath.GetImageFormatExtension(ImageFormat.Tiff);
 
         private static AreaSettings AreaSettings = new AreaSettings(Units.Centimeters, 0.1f, 5.7f, 0.1F + 2.6f, 5.7f + 2.6f);
 
@@ -30,10 +33,14 @@ namespace Scanner
 
             _twain.TransferImage += delegate (Object sender, TransferImageEventArgs args)
             {
-                if (args.Image != null)
+                Bitmap image = args.Image;
+                if (image != null)
                 {
-                    Bitmap image = args.Image;
-                    image.Save(fileBasePath + Guid.NewGuid().ToString() + imageSuffix);
+                    string imageName = Guid.NewGuid().ToString() + imageSuffix;
+                    string imagePath = fileBasePath + imageName;
+                    log.Info("basePath: " + fileBasePath + ", imageName: " + imageName + ", imagePath: " + imagePath);
+
+                    image.Save(imagePath);
                 }
             };
 

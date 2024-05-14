@@ -87,6 +87,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Scanner.Toolkit\Scanner.Toolkit.csproj">
+      <Project>{e1683631-f324-4846-bea4-ec28234ef335}</Project>
+      <Name>Scanner.Toolkit</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Scanner.Twain\Scanner.Twain32.csproj">
       <Project>{9556dba7-fb59-4013-9e06-a563aaea2deb}</Project>
       <Name>Scanner.Twain32</Name>

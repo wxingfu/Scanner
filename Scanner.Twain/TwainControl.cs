@@ -38,19 +38,19 @@ namespace Scanner.Twain
         /// <summary>
         /// Notification that the scanning has completed.
         /// </summary>
-        public event EventHandler<ScanningStartEventArgs> ScanningStart;
+        //public event EventHandler<ScanningStartEventArgs> ScanningStart;
 
         public event EventHandler<ScanningCompleteEventArgs> ScanningComplete;
 
-        public event EventHandler<ScanningExceptionArgs> ScanningException;
+        //public event EventHandler<ScanningExceptionArgs> ScanningException;
 
-        public event EventHandler<ScanningEventArgs> ScanningEvent;
+        //public event EventHandler<ScanningEventArgs> ScanningEvent;
 
-        public event EventHandler<TransferReadyEventArgs> TransferReady;
+        //public event EventHandler<TransferReadyEventArgs> TransferReady;
 
         public event EventHandler<TransferImageEventArgs> TransferImage;
 
-        public event EventHandler<TransferFileEventArgs> TransferFile;
+        //public event EventHandler<TransferFileEventArgs> TransferFile;
 
 
         /// <summary>

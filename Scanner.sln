@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner", "Scanner\Scanner.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner.Twain32", "Scanner.Twain\Scanner.Twain32.csproj", "{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner.Toolkit", "Scanner.Toolkit\Scanner.Toolkit.csproj", "{E1683631-F324-4846-BEA4-EC28234EF335}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1683631-F324-4846-BEA4-EC28234EF335}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1683631-F324-4846-BEA4-EC28234EF335}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1683631-F324-4846-BEA4-EC28234EF335}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1683631-F324-4846-BEA4-EC28234EF335}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

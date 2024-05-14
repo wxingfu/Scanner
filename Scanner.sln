@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.9.34728.123
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner", "Scanner\Scanner.csproj", "{529F953A-5F4D-494A-B741-7DD88BC2434B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Scanner.Twain32", "Scanner.Twain\Scanner.Twain32.csproj", "{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{529F953A-5F4D-494A-B741-7DD88BC2434B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{529F953A-5F4D-494A-B741-7DD88BC2434B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{529F953A-5F4D-494A-B741-7DD88BC2434B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{529F953A-5F4D-494A-B741-7DD88BC2434B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9556DBA7-FB59-4013-9E06-A563AAEA2DEB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {117AC6E6-3385-41DA-B8C1-32CD32E40F5D}
+	EndGlobalSection
+EndGlobal

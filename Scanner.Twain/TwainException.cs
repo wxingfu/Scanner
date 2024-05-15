@@ -7,18 +7,13 @@ namespace Scanner.Twain
 {
     public class TwainException : ApplicationException
     {
-        public TwainException()
-            : this(null, null)
+        public TwainException() : this(null, null){ }
+
+        public TwainException(string message) : this(message, null)
         {
         }
 
-        public TwainException(string message)
-            : this(message, null)
-        {
-        }
-
-        public TwainException(string message, TwainResult returnCode)
-            : this(message, null)
+        public TwainException(string message, TwainResult returnCode) : this(message, null)
         {
             ReturnCode = returnCode;
         }

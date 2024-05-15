@@ -450,7 +450,7 @@ namespace Scanner.Twain
         public void OpenSource()
         {
             var result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.OpenDS, SourceId);
-            log.Info("OpenDS: " + result);
+            log.Debug("OpenDS: " + result);
 
             if (result != TwainResult.Success)
             {
@@ -471,7 +471,7 @@ namespace Scanner.Twain
             ui.ParentHand = _messageHook.WindowHandle;
 
             var result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.EnableDS, ui);
-            log.Info("EnableDS: " + result);
+            log.Debug("EnableDS: " + result);
 
             if (result != TwainResult.Success)
             {
@@ -494,11 +494,13 @@ namespace Scanner.Twain
             var defaultSourceId = new Identity();
             // Attempt to get information about the system default source
             var result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetDefault, defaultSourceId);
-            log.Info("GetDefault: " + result);
+            log.Debug("GetDefault: " + result);
 
             if (result != TwainResult.Success)
             {
                 var status = DataSourceManager.GetConditionCode(applicationId, null);
+                log.Debug("ConditionCode: " + status);
+
                 throw new TwainException("Error getting information about the default source: " + result, result, status);
             }
 
@@ -534,7 +536,8 @@ namespace Scanner.Twain
 
             // Get the first source
             TwainResult result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetFirst, id);
-            log.Info("Get the first source: " + result);
+            log.Debug("Get the first source: " + result);
+            
             if (result == TwainResult.EndOfList)
             {
                 return sources;
@@ -552,7 +555,7 @@ namespace Scanner.Twain
             {
                 // Get the next source
                 result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetNext, id);
-                log.Info("Get the next source: " + result);
+                log.Debug("Get the next source: " + result);
 
                 if (result == TwainResult.EndOfList)
                 {
@@ -611,12 +614,12 @@ namespace Scanner.Twain
             {
                 UserInterface userInterface = new UserInterface();
                 TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.DisableDS, userInterface);
-                log.Info("DisableDS: " + result);
+                log.Debug("DisableDS: " + result);
 
                 if (result != TwainResult.Failure)
                 {
                     result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.CloseDS, SourceId);
-                    log.Info("CloseDS: " + result);
+                    log.Debug("CloseDS: " + result);
                 }
             }
         }

@@ -29,7 +29,21 @@ namespace Scanner
         {
             InitializeComponent();
 
-            _twain = new TwainControl(new WinFormsWindowMessageHook(this));
+            Init();
+        }
+
+
+        private void Init()
+        {
+            try
+            {
+                _twain = new TwainControl(new WinFormsWindowMessageHook(this));
+            }
+            catch (Exception ex)
+            {
+                //MessageBox.Show("未连接到扫描仪");
+                return;
+            }
 
             _twain.TransferImage += delegate (Object sender, TransferImageEventArgs args)
             {

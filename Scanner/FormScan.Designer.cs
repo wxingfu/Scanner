@@ -35,16 +35,18 @@
             // cbbDataSource
             // 
             this.cbbDataSource.FormattingEnabled = true;
-            this.cbbDataSource.Location = new System.Drawing.Point(13, 12);
+            this.cbbDataSource.Location = new System.Drawing.Point(17, 15);
+            this.cbbDataSource.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cbbDataSource.Name = "cbbDataSource";
-            this.cbbDataSource.Size = new System.Drawing.Size(254, 20);
+            this.cbbDataSource.Size = new System.Drawing.Size(337, 23);
             this.cbbDataSource.TabIndex = 1;
             // 
             // bntScan
             // 
-            this.bntScan.Location = new System.Drawing.Point(303, 12);
+            this.bntScan.Location = new System.Drawing.Point(404, 15);
+            this.bntScan.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.bntScan.Name = "bntScan";
-            this.bntScan.Size = new System.Drawing.Size(60, 20);
+            this.bntScan.Size = new System.Drawing.Size(80, 25);
             this.bntScan.TabIndex = 2;
             this.bntScan.Text = "扫描";
             this.bntScan.UseVisualStyleBackColor = true;
@@ -52,11 +54,12 @@
             // 
             // FormScan
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(544, 158);
+            this.ClientSize = new System.Drawing.Size(1246, 721);
             this.Controls.Add(this.bntScan);
             this.Controls.Add(this.cbbDataSource);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "FormScan";
             this.Text = "FormScan";
             this.ResumeLayout(false);

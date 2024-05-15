@@ -43,7 +43,7 @@ namespace Scanner.Twain
 
             // Initialise the data source manager
             TwainResult result = Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, Message.OpenDSM, ref windowHandle);
-            log.Info("OpenDSM: " + result);
+            log.Debug("OpenDSM: " + result);
 
             if (result == TwainResult.Success)
             {
@@ -188,7 +188,7 @@ namespace Scanner.Twain
                     // Get the image info
                     ImageInfo imageInfo = new ImageInfo();
                     result = Twain32Native.DsImageInfo(ApplicationId, DataSource.SourceId, DataGroup.Image, DataArgumentType.ImageInfo, Message.Get, imageInfo);
-                    log.Info("Get the image: " + result);
+                    log.Debug("Get the image: " + result);
 
                     if (result != TwainResult.Success)
                     {
@@ -198,7 +198,7 @@ namespace Scanner.Twain
 
                     // Transfer the image from the device
                     result = Twain32Native.DsImageTransfer(ApplicationId, DataSource.SourceId, DataGroup.Image, DataArgumentType.ImageNativeXfer, Message.Get, ref hbitmap);
-                    log.Info("Transfer the image: " + result);
+                    log.Debug("Transfer the image: " + result);
 
                     if (result != TwainResult.XferDone)
                     {
@@ -208,7 +208,7 @@ namespace Scanner.Twain
 
                     // End pending transfers
                     result = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.EndXfer, pendingTransfer);
-                    log.Info("End pending transfers: " + result);
+                    log.Debug("End pending transfers: " + result);
 
                     if (result != TwainResult.Success)
                     {
@@ -239,7 +239,7 @@ namespace Scanner.Twain
             {
                 // Reset any pending transfers
                 result = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.Reset, pendingTransfer);
-                log.Info("Reset: " + result);
+                log.Debug("Reset: " + result);
             }
         }
 

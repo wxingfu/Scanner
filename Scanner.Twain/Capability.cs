@@ -72,32 +72,23 @@ namespace Scanner.Twain
 
         protected void SetValue<T>(T value)
         {
-            log.Debug(string.Format("Attempting to set capabilities:{0}, value:{1}, type:{1}",
-                _capability, value, _twainType));
+            log.Debug(string.Format("Attempting to set capabilities:{0}, value:{1}, type:{1}",  _capability, value, _twainType));
 
             int rawValue = Convert.ToInt32(value);
             var oneValue = new CapabilityOneValue(_twainType, rawValue);
             var twainCapability = TwainCapability.From(_capability, oneValue);
 
-            TwainResult result = Twain32Native.DsCapability(
-                    _applicationId,
-                    _sourceId,
-                    DataGroup.Control,
-                    DataArgumentType.Capability,
-                    Message.Set,
-                    twainCapability);
-
+            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Set, twainCapability);
+            
             if (result != TwainResult.Success)
             {
-                log.Debug(string.Format("Failed to set capabilities:{0}, value:{1}, type:{1}, result:{2}",
-                    _capability, value, _twainType, result));
+                log.Debug(string.Format("Failed to set capabilities:{0}, value:{1}, type:{1}, result:{2}", _capability, value, _twainType, result));
 
                 if (result == TwainResult.Failure)
                 {
                     var conditionCode = GetStatus();
 
-                    log.Error(string.Format("Failed to set capabilites:{0} reason: {1}",
-                        _capability, conditionCode));
+                    log.Error(string.Format("Failed to set capabilites:{0} reason: {1}", _capability, conditionCode));
 
                     throw new TwainException("Failed to set capability.", result, conditionCode);
                 }

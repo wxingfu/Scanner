@@ -1,12 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Reflection;
-using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Runtime.CompilerServices;
-using System.ComponentModel;
-using System.Windows.Forms;
 
 namespace Scanner.Twain
 {

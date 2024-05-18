@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Runtime.InteropServices;
-using System.Drawing;
-using System.Diagnostics;
+﻿using System.Runtime.InteropServices;
 
 namespace Scanner.Twain
 {
@@ -24,19 +19,7 @@ namespace Scanner.Twain
 
         public override string ToString()
         {
-            return string.Format(
-                "s:{0} w:{1} h:{2} p:{3} bc:{4} c:{5} si:{6} xpels:{7} ypels:{8} cu:{9} ci:{10}",
-                Size,
-                Width,
-                Height,
-                Planes,
-                BitCount,
-                Compression,
-                SizeImage,
-                XPelsPerMeter,
-                YPelsPerMeter,
-                ClrUsed,
-                ClrImportant);
+            return string.Format("s:{0} w:{1} h:{2} p:{3} bc:{4} c:{5} si:{6} xpels:{7} ypels:{8} cu:{9} ci:{10}", Size, Width, Height, Planes, BitCount, Compression, SizeImage, XPelsPerMeter, YPelsPerMeter, ClrUsed, ClrImportant);
         }
     }
 }

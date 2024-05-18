@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using log4net;
 
 namespace Scanner.Twain
@@ -30,21 +28,12 @@ namespace Scanner.Twain
             var oneValue = new CapabilityOneValue(_twainType, 0);
             var twainCapability = TwainCapability.From(_capability, oneValue);
 
-            var result = Twain32Native.DsCapability(
-                    _applicationId,
-                    _sourceId,
-                    DataGroup.Control,
-                    DataArgumentType.Capability,
-                    Message.Get,
-                    twainCapability);
+            var result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Get, twainCapability);
 
             if (result != TwainResult.Success)
             {
                 var conditionCode = GetStatus();
-
-                log.Debug(string.Format("Failed to get capability:{0} reason: {1}", 
-                    _capability, conditionCode));
-
+                log.Debug(string.Format("Failed to get capability:{0} reason: {1}",  _capability, conditionCode));
                 return new BasicCapabilityResult()
                 {
                     ConditionCode = conditionCode,
@@ -58,6 +47,7 @@ namespace Scanner.Twain
             {
                 RawBasicValue = oneValue.Value
             };
+
         }
 
         protected ConditionCode GetStatus()
@@ -87,9 +77,7 @@ namespace Scanner.Twain
                 if (result == TwainResult.Failure)
                 {
                     var conditionCode = GetStatus();
-
                     log.Error(string.Format("Failed to set capabilites:{0} reason: {1}", _capability, conditionCode));
-
                     throw new TwainException("Failed to set capability.", result, conditionCode);
                 }
                 else if (result == TwainResult.CheckStatus)
@@ -122,8 +110,7 @@ namespace Scanner.Twain
             // Check that the device supports the capability
             if (capResult.ConditionCode != ConditionCode.Success)
             {
-                throw new TwainException(string.Format("Unsupported capability {0}", capability),
-                    capResult.ErrorCode, capResult.ConditionCode);
+                throw new TwainException(string.Format("Unsupported capability {0}", capability), capResult.ErrorCode, capResult.ConditionCode);
             }
 
             if (capResult.RawBasicValue == rawValue)
@@ -146,8 +133,7 @@ namespace Scanner.Twain
             // Check that the device supports the capability
             if (capResult.ConditionCode != ConditionCode.Success)
             {
-                throw new TwainException(string.Format("Unexpected failure verifying capability {0}", capability),
-                    capResult.ErrorCode, capResult.ConditionCode);
+                throw new TwainException(string.Format("Unexpected failure verifying capability {0}", capability), capResult.ErrorCode, capResult.ConditionCode);
             }
 
             return capResult.RawBasicValue;
@@ -162,8 +148,7 @@ namespace Scanner.Twain
             // Check that the device supports the capability
             if (capResult.ConditionCode != ConditionCode.Success)
             {
-                throw new TwainException(string.Format("Unsupported capability {0}", capability),
-                    capResult.ErrorCode, capResult.ConditionCode);
+                throw new TwainException(string.Format("Unsupported capability {0}", capability), capResult.ErrorCode, capResult.ConditionCode);
             }
 
             if (capResult.BoolValue == value)
@@ -180,18 +165,16 @@ namespace Scanner.Twain
             // Check that the device supports the capability
             if (capResult.ConditionCode != ConditionCode.Success)
             {
-                throw new TwainException(string.Format("Unexpected failure verifying capability {0}", capability),
-                    capResult.ErrorCode, capResult.ConditionCode);
+                throw new TwainException(string.Format("Unexpected failure verifying capability {0}", capability), capResult.ErrorCode, capResult.ConditionCode);
             }
             else if (capResult.BoolValue != value)
             {
-                throw new TwainException(string.Format("Failed to set value for capability {0}", capability),
-                    capResult.ErrorCode, capResult.ConditionCode);
+                throw new TwainException(string.Format("Failed to set value for capability {0}", capability), capResult.ErrorCode, capResult.ConditionCode);
             }
+
         }
 
-        public static bool GetBoolCapability(Capabilities capability, Identity applicationId,
-            Identity sourceId)
+        public static bool GetBoolCapability(Capabilities capability, Identity applicationId, Identity sourceId)
         {
             var c = new Capability(capability, TwainType.Int16, applicationId, sourceId);
             var capResult = c.GetBasicValue();
@@ -199,11 +182,11 @@ namespace Scanner.Twain
             // Check that the device supports the capability
             if (capResult.ConditionCode != ConditionCode.Success)
             {
-                throw new TwainException(string.Format("Unsupported capability {0}", capability),
-                    capResult.ErrorCode, capResult.ConditionCode);
+                throw new TwainException(string.Format("Unsupported capability {0}", capability), capResult.ErrorCode, capResult.ConditionCode);
             }
 
             return capResult.BoolValue;
-        }       
+        } 
+        
     }
 }

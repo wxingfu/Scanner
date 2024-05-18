@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Reflection;
-using System.Drawing;
 using log4net;
 
 namespace Scanner.Twain

@@ -95,6 +95,10 @@
       <Project>{9556dba7-fb59-4013-9e06-a563aaea2deb}</Project>
       <Name>Scanner.Twain32</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Scanner.Visual\Scanner.Visual.csproj">
+      <Project>{7ea9b03e-a5a7-4381-af89-b473d9c82e73}</Project>
+      <Name>Scanner.Visual</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

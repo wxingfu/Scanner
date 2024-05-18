@@ -1,7 +1,6 @@
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Scanner.Twain
 {
@@ -41,11 +40,7 @@ namespace Scanner.Twain
         {
             try
             {
-                scanSettings.TransferCount = Capability.SetCapability(
-                        Capabilities.XferCount,
-                        scanSettings.TransferCount,
-                        _applicationId,
-                        SourceId);
+                scanSettings.TransferCount = Capability.SetCapability(Capabilities.XferCount, scanSettings.TransferCount, _applicationId, SourceId);
             }
             catch
             {
@@ -275,7 +270,6 @@ namespace Scanner.Twain
         private bool NegotiateArea(ScanSettings scanSettings)
         {
             var area = scanSettings.Area;
-
             if (area == null)
             {
                 return false;
@@ -309,6 +303,7 @@ namespace Scanner.Twain
 
             if (result != TwainResult.Success)
             {
+                log.Error("DsImageLayout.GetDefault error result: " + result + result);
                 throw new TwainException("DsImageLayout.GetDefault error", result);
             }
 
@@ -327,10 +322,8 @@ namespace Scanner.Twain
             {
                 case ColourSetting.BlackAndWhite:
                     return PixelType.BlackAndWhite;
-
                 case ColourSetting.GreyScale:
                     return PixelType.Grey;
-
                 case ColourSetting.Colour:
                     return PixelType.Rgb;
             }
@@ -350,10 +343,8 @@ namespace Scanner.Twain
             {
                 case ColourSetting.BlackAndWhite:
                     return 1;
-
                 case ColourSetting.GreyScale:
                     return 8;
-
                 case ColourSetting.Colour:
                     return 16;
             }

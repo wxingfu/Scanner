@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Scanner.Twain
 {
@@ -20,7 +18,6 @@ namespace Scanner.Twain
                     try
                     {
                         var result = Capability.GetBoolCapability(capability, dataSourceManager.ApplicationId, dataSource.SourceId);
-
                         Console.WriteLine("{0}: {1}", capability, result);
                     }
                     catch (TwainException e)

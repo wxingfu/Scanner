@@ -13,9 +13,9 @@ namespace Scanner.Twain
         Jpeg = 4,       /* JPEG File Interchange Format */
         Fpx = 5,        /* Flash Pix                    */
         TiffMulti = 6,  /* Multi-page tiff file         */
-        Png = 7,        
-        Spiff = 8, 
-        Exif = 9, 
+        Png = 7,
+        Spiff = 8,
+        Exif = 9,
         Pdf = 10,       /* 1.91 NB: this is not PDF/A */
         Jp2 = 11,       /* 1.91 */
         Jpx = 13,       /* 1.91 */

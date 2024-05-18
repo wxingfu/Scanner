@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Scanner.Twain
+﻿namespace Scanner.Twain
 {
     /// <summary>
     /// ICAP_XFERMECH values (Image Transfer)

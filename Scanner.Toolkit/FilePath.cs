@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using System.Drawing.Imaging;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 
 namespace Scanner.Toolkit
 {
@@ -551,7 +549,7 @@ namespace Scanner.Toolkit
 
         public static List<string> GetPictureList(string path, bool isRecursive = false)
         {
-            string[] exts = new string[5] { ".jpg", ".bmp", ".png", ".tif", ".gif" };
+            string[] exts = new string[] { ".jpg", ".bmp", ".png", ".tif", ".gif", ".tiff" };
             return GetFilesWithExtension(path, exts, isRecursive);
         }
 

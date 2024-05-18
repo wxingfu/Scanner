@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Scanner.Twain
+﻿namespace Scanner.Twain
 {
     /// <summary>
     /// Twain spec ICAP_ORIENTATION values.

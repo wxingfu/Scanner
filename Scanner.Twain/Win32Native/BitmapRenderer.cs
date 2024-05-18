@@ -26,7 +26,7 @@ namespace Scanner.Twain
 
             _bitmapInfo = new BitmapInfoHeader();
             Marshal.PtrToStructure(_bitmapPointer, _bitmapInfo);
-            log.Debug(_bitmapInfo.ToString());
+            log.Debug("bitmapInfo: " + _bitmapInfo.ToString());
 
             _rectangle = new Rectangle();
             _rectangle.X = _rectangle.Y = 0;
@@ -38,7 +38,6 @@ namespace Scanner.Twain
                 _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) * _bitmapInfo.Height;
             }
 
-
             // The following code only works on x86
             Debug.Assert(Marshal.SizeOf(typeof(IntPtr)) == 4);
 
@@ -49,27 +48,24 @@ namespace Scanner.Twain
             }
 
             pixelInfoPointer = (pixelInfoPointer * 4) + _bitmapInfo.Size + _bitmapPointer.ToInt32();
-
             _pixelInfoPointer = new IntPtr(pixelInfoPointer);
         }
 
         ~BitmapRenderer()
         {
-            Dispose(false);
+            //Dispose(false);
+            Dispose();
         }
 
         public Bitmap RenderToBitmap()
         {
             Bitmap bitmap = new Bitmap(_rectangle.Width, _rectangle.Height);
-
             using (Graphics graphics = Graphics.FromImage(bitmap))
             {
                 IntPtr hdc = graphics.GetHdc();
-
                 try
                 {
-                    Gdi32Native.SetDIBitsToDevice(hdc, 0, 0, _rectangle.Width, _rectangle.Height,
-                        0, 0, 0, _rectangle.Height, _pixelInfoPointer, _bitmapPointer, 0);
+                    Gdi32Native.SetDIBitsToDevice(hdc, 0, 0, _rectangle.Width, _rectangle.Height, 0, 0, 0, _rectangle.Height, _pixelInfoPointer, _bitmapPointer, 0);
                 }
                 finally
                 {
@@ -78,7 +74,6 @@ namespace Scanner.Twain
             }
 
             bitmap.SetResolution(PpmToDpi(_bitmapInfo.XPelsPerMeter), PpmToDpi(_bitmapInfo.YPelsPerMeter));
-
             return bitmap;
         }
 

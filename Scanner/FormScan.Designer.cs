@@ -39,6 +39,11 @@
             this.DefaultListView = new System.Windows.Forms.ListView();
             this.DefaultImageList = new System.Windows.Forms.ImageList(this.components);
             this.tabPageVerticalPreview = new System.Windows.Forms.TabPage();
+            this.VerticalListView = new System.Windows.Forms.ListView();
+            this.VerticalPictureBox = new System.Windows.Forms.PictureBox();
+            this.VerticalBtnPanel = new System.Windows.Forms.Panel();
+            this.VerticalBtnNext = new System.Windows.Forms.Button();
+            this.VerticalBtnPreviou = new System.Windows.Forms.Button();
             this.tabPageHorizontalPreView = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
@@ -47,6 +52,9 @@
             this.panelSacnMenu.SuspendLayout();
             this.tabControlPreview.SuspendLayout();
             this.tabPageSmallPreview.SuspendLayout();
+            this.tabPageVerticalPreview.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.VerticalPictureBox)).BeginInit();
+            this.VerticalBtnPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // cbbDataSource
@@ -114,6 +122,7 @@
             this.tabControlPreview.SelectedIndex = 0;
             this.tabControlPreview.Size = new System.Drawing.Size(833, 730);
             this.tabControlPreview.TabIndex = 0;
+            this.tabControlPreview.SelectedIndexChanged += new System.EventHandler(this.tabControlPreview_SelectedIndexChanged);
             // 
             // tabPageSmallPreview
             // 
@@ -153,21 +162,75 @@
             // 
             // DefaultImageList
             // 
-            this.DefaultImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth16Bit;
-            this.DefaultImageList.ImageSize = new System.Drawing.Size(100, 100);
+            this.DefaultImageList.ColorDepth = System.Windows.Forms.ColorDepth.Depth24Bit;
+            this.DefaultImageList.ImageSize = new System.Drawing.Size(100, 140);
             this.DefaultImageList.TransparentColor = System.Drawing.Color.Transparent;
             // 
             // tabPageVerticalPreview
             // 
             this.tabPageVerticalPreview.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.tabPageVerticalPreview.Controls.Add(this.VerticalListView);
+            this.tabPageVerticalPreview.Controls.Add(this.VerticalPictureBox);
+            this.tabPageVerticalPreview.Controls.Add(this.VerticalBtnPanel);
             this.tabPageVerticalPreview.Location = new System.Drawing.Point(4, 22);
             this.tabPageVerticalPreview.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageVerticalPreview.Name = "tabPageVerticalPreview";
             this.tabPageVerticalPreview.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageVerticalPreview.Size = new System.Drawing.Size(825, 747);
+            this.tabPageVerticalPreview.Size = new System.Drawing.Size(825, 704);
             this.tabPageVerticalPreview.TabIndex = 1;
             this.tabPageVerticalPreview.Text = "垂直视图";
             this.tabPageVerticalPreview.UseVisualStyleBackColor = true;
+            // 
+            // VerticalListView
+            // 
+            this.VerticalListView.Dock = System.Windows.Forms.DockStyle.Right;
+            this.VerticalListView.HideSelection = false;
+            this.VerticalListView.Location = new System.Drawing.Point(684, 2);
+            this.VerticalListView.Name = "VerticalListView";
+            this.VerticalListView.Size = new System.Drawing.Size(135, 667);
+            this.VerticalListView.TabIndex = 1;
+            this.VerticalListView.UseCompatibleStateImageBehavior = false;
+            this.VerticalListView.Click += new System.EventHandler(this.VerticalListView_Click);
+            // 
+            // VerticalPictureBox
+            // 
+            this.VerticalPictureBox.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.VerticalPictureBox.Dock = System.Windows.Forms.DockStyle.Left;
+            this.VerticalPictureBox.Location = new System.Drawing.Point(2, 2);
+            this.VerticalPictureBox.Name = "VerticalPictureBox";
+            this.VerticalPictureBox.Size = new System.Drawing.Size(676, 667);
+            this.VerticalPictureBox.TabIndex = 0;
+            this.VerticalPictureBox.TabStop = false;
+            // 
+            // VerticalBtnPanel
+            // 
+            this.VerticalBtnPanel.Controls.Add(this.VerticalBtnNext);
+            this.VerticalBtnPanel.Controls.Add(this.VerticalBtnPreviou);
+            this.VerticalBtnPanel.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.VerticalBtnPanel.Location = new System.Drawing.Point(2, 669);
+            this.VerticalBtnPanel.Name = "VerticalBtnPanel";
+            this.VerticalBtnPanel.Size = new System.Drawing.Size(817, 29);
+            this.VerticalBtnPanel.TabIndex = 4;
+            // 
+            // VerticalBtnNext
+            // 
+            this.VerticalBtnNext.Location = new System.Drawing.Point(393, 3);
+            this.VerticalBtnNext.Name = "VerticalBtnNext";
+            this.VerticalBtnNext.Size = new System.Drawing.Size(75, 23);
+            this.VerticalBtnNext.TabIndex = 3;
+            this.VerticalBtnNext.Text = "下一张";
+            this.VerticalBtnNext.UseVisualStyleBackColor = true;
+            this.VerticalBtnNext.Click += new System.EventHandler(this.VerticalBtnNext_Click);
+            // 
+            // VerticalBtnPreviou
+            // 
+            this.VerticalBtnPreviou.Location = new System.Drawing.Point(277, 3);
+            this.VerticalBtnPreviou.Name = "VerticalBtnPreviou";
+            this.VerticalBtnPreviou.Size = new System.Drawing.Size(75, 23);
+            this.VerticalBtnPreviou.TabIndex = 2;
+            this.VerticalBtnPreviou.Text = "上一张";
+            this.VerticalBtnPreviou.UseVisualStyleBackColor = true;
+            this.VerticalBtnPreviou.Click += new System.EventHandler(this.VerticalBtnPreviou_Click);
             // 
             // tabPageHorizontalPreView
             // 
@@ -176,7 +239,7 @@
             this.tabPageHorizontalPreView.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageHorizontalPreView.Name = "tabPageHorizontalPreView";
             this.tabPageHorizontalPreView.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageHorizontalPreView.Size = new System.Drawing.Size(825, 747);
+            this.tabPageHorizontalPreView.Size = new System.Drawing.Size(825, 704);
             this.tabPageHorizontalPreView.TabIndex = 2;
             this.tabPageHorizontalPreView.Text = "水平视图";
             this.tabPageHorizontalPreView.UseVisualStyleBackColor = true;
@@ -197,6 +260,9 @@
             this.panelSacnMenu.ResumeLayout(false);
             this.tabControlPreview.ResumeLayout(false);
             this.tabPageSmallPreview.ResumeLayout(false);
+            this.tabPageVerticalPreview.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.VerticalPictureBox)).EndInit();
+            this.VerticalBtnPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -213,6 +279,11 @@
         private System.Windows.Forms.ListView DefaultListView;
         private System.Windows.Forms.ImageList DefaultImageList;
         private Visual.PageControl DefaultPageControl;
+        private System.Windows.Forms.ListView VerticalListView;
+        private System.Windows.Forms.PictureBox VerticalPictureBox;
+        private System.Windows.Forms.Button VerticalBtnNext;
+        private System.Windows.Forms.Button VerticalBtnPreviou;
+        private System.Windows.Forms.Panel VerticalBtnPanel;
     }
 }
 

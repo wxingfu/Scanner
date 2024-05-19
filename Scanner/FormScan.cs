@@ -113,6 +113,9 @@ namespace Scanner
             {
                 Enabled = true;
 
+                // tab页切回默认显示
+                tabControlPreview.SelectedIndex = 0;
+
                 // 初始化图片显示
                 DefaultShowImage();
             };
@@ -127,7 +130,6 @@ namespace Scanner
             }
 
         }
-
 
         /// <summary>
         /// 扫描按钮
@@ -180,15 +182,24 @@ namespace Scanner
         # endregion
 
 
-        # region 图像显示和翻页
+        # region 默认的图像显示和翻页
 
         /// <summary>
         /// 初始化扫描到的图像显示
         /// </summary>
         private void DefaultShowImage()
         {
+            this.imagePathList.Clear();
             this.imagePathList = FilePath.GetPictureList(fileBasePath);
+
+            // 没数据不渲染
+            if (this.imagePathList.Count <= 0)
+            {
+                return;
+            }
+
             this.currentImagePageList.Clear();
+
             List<string> currentImagePage = new List<string>();
             int pageNo = 1;
             foreach (string imagePath in imagePathList)
@@ -210,6 +221,7 @@ namespace Scanner
                 this.currentImagePageList.Add(pageNo, currentImagePage);
             }
 
+            // 默认第一页
             DefaultShowImage(1);
         }
 
@@ -220,6 +232,8 @@ namespace Scanner
         private void DefaultShowImage(int currentPage)
         {
             this.DefaultImageList.Images.Clear();
+            this.DefaultImageList.ColorDepth = ColorDepth.Depth24Bit;
+            this.DefaultImageList.ImageSize = new Size(80, 115);
 
             // 没数据时，点翻页无用
             if (this.currentImagePageList.Count == 0)
@@ -286,6 +300,152 @@ namespace Scanner
         }
 
         #endregion
+
+
+        /// <summary>
+        /// tab页切换
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void tabControlPreview_SelectedIndexChanged(Object sender, EventArgs e)
+        {
+            switch (tabControlPreview.SelectedIndex)
+            {
+                case 0:
+                    DefaultShowImage();
+                    break;
+                case 1:
+                    VerticalShowImage();
+                    break;
+            }
+        }
+
+
+        # region 垂直显示图片
+
+        // 垂直显示图片的索引
+        private int verticalSelectedIndex = 0;
+
+        private void VerticalShowImage()
+        {
+            this.imagePathList.Clear();
+            this.imagePathList = FilePath.GetPictureList(fileBasePath);
+            // 没数据不渲染
+            if (this.imagePathList.Count <= 0)
+            {
+                return;
+            }
+
+            this.DefaultImageList.Images.Clear();
+            this.DefaultImageList.ColorDepth = ColorDepth.Depth24Bit;
+            this.DefaultImageList.ImageSize = new Size(60, 85);
+
+            this.imagePathList.ForEach(imagePath =>
+            {
+                Image tmpImage = Image.FromFile(imagePath);
+                this.DefaultImageList.Images.Add(tmpImage);
+                tmpImage.Dispose();
+            });
+
+            this.VerticalListView.Items.Clear();
+            this.VerticalListView.LargeImageList = this.DefaultImageList;
+            this.VerticalListView.View = View.LargeIcon;
+
+            //开始绑定
+            this.VerticalListView.BeginUpdate();
+            //增加图片至ListView控件中
+            for (int i = 0; i < this.DefaultImageList.Images.Count; i++)
+            {
+                ListViewItem lvi = new ListViewItem();
+                lvi.ImageIndex = i;
+                lvi.Text = "" + (i + 1);
+                this.VerticalListView.Items.Add(lvi);
+            }
+            this.VerticalListView.EndUpdate();
+
+
+            // 默认显示第一张
+            this.VerticalListView.Items[0].Selected = true;
+            this.verticalSelectedIndex = this.VerticalListView.SelectedItems[0].Index;
+            this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
+            this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+
+        //增加双击ListView事件 显示图片至PictureBox
+        private void VerticalListView_Click(object sender, EventArgs e)
+        {
+            if (this.VerticalListView.SelectedItems.Count == 0)
+            {
+                return;
+            }
+            //采用索引方式 imagePathList记录图片真实路径
+            this.verticalSelectedIndex = this.VerticalListView.SelectedItems[0].Index;
+            //显示图片
+            this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
+            //图片被拉伸或收缩适合pictureBox大小
+            this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+        }
+
+        /// <summary>
+        /// 前一张
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VerticalBtnPreviou_Click(object sender, EventArgs e)
+        {
+            if (this.VerticalPictureBox.Image != null)
+            {
+                if (this.verticalSelectedIndex > 0)
+                {
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = false;
+                    this.verticalSelectedIndex--;
+                    this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
+                    this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
+                }
+                else if (this.verticalSelectedIndex == 0)
+                {
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = false;
+                    this.verticalSelectedIndex = imagePathList.Count;
+                    this.verticalSelectedIndex--;
+                    this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
+                    this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
+                }
+            }
+        }
+
+        /// <summary>
+        /// 后一张
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void VerticalBtnNext_Click(object sender, EventArgs e)
+        {
+            if (this.VerticalPictureBox.Image != null)
+            {
+                if (this.verticalSelectedIndex == imagePathList.Count - 1)
+                {
+                    //最后一张图片
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = false;
+                    this.verticalSelectedIndex = 0;
+                    this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
+                    this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
+                }
+                else
+                {
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = false;
+                    this.verticalSelectedIndex++;
+                    this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
+                    this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
+                }
+            }
+        }
+
+        # endregion
 
 
         #region 控件大小随窗体大小等比例缩放
@@ -373,6 +533,7 @@ namespace Scanner
             //重置窗口布局
             ReWinformLayout();
         }
+
 
         #endregion
 

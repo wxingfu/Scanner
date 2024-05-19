@@ -233,7 +233,7 @@ namespace Scanner
         {
             this.DefaultImageList.Images.Clear();
             this.DefaultImageList.ColorDepth = ColorDepth.Depth24Bit;
-            this.DefaultImageList.ImageSize = new Size(80, 115);
+            this.DefaultImageList.ImageSize = new Size((int)(80 * this.Width / this.x), (int)(80 * Math.Sqrt(2) * this.Width / this.x));
 
             // 没数据时，点翻页无用
             if (this.currentImagePageList.Count == 0)
@@ -309,7 +309,7 @@ namespace Scanner
         /// <param name="e"></param>
         private void tabControlPreview_SelectedIndexChanged(Object sender, EventArgs e)
         {
-            switch (tabControlPreview.SelectedIndex)
+            switch (this.tabControlPreview.SelectedIndex)
             {
                 case 0:
                     DefaultShowImage();
@@ -338,7 +338,7 @@ namespace Scanner
 
             this.DefaultImageList.Images.Clear();
             this.DefaultImageList.ColorDepth = ColorDepth.Depth24Bit;
-            this.DefaultImageList.ImageSize = new Size(60, 85);
+            this.DefaultImageList.ImageSize = new Size((int)(60 * this.Width / this.x), (int)(60 * Math.Sqrt(2) * this.Width / this.x));
 
             this.imagePathList.ForEach(imagePath =>
             {
@@ -369,6 +369,8 @@ namespace Scanner
             this.verticalSelectedIndex = this.VerticalListView.SelectedItems[0].Index;
             this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
             this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+            // 滚动条跟着动
+            this.VerticalListView.EnsureVisible(this.verticalSelectedIndex);
         }
 
 
@@ -381,6 +383,7 @@ namespace Scanner
             }
             //采用索引方式 imagePathList记录图片真实路径
             this.verticalSelectedIndex = this.VerticalListView.SelectedItems[0].Index;
+            this.VerticalListView.EnsureVisible(this.verticalSelectedIndex);
             //显示图片
             this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
             //图片被拉伸或收缩适合pictureBox大小
@@ -396,22 +399,28 @@ namespace Scanner
         {
             if (this.VerticalPictureBox.Image != null)
             {
-                if (this.verticalSelectedIndex > 0)
+                if (this.verticalSelectedIndex == 0)
                 {
-                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = false;
-                    this.verticalSelectedIndex--;
-                    this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
-                    this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
-                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
-                }
-                else if (this.verticalSelectedIndex == 0)
-                {
+                    //第一张图
                     this.VerticalListView.Items[this.verticalSelectedIndex].Selected = false;
                     this.verticalSelectedIndex = imagePathList.Count;
                     this.verticalSelectedIndex--;
                     this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
                     this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
+                    this.VerticalListView.EnsureVisible(this.verticalSelectedIndex);
+                }
+                else if (this.verticalSelectedIndex > 0)
+                {
+                    // 取消前一个选中
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = false;
+                    this.verticalSelectedIndex--;
+                    this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
+                    this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                    //选中当前
+                    this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
+                    //滚动条跟着动
+                    this.VerticalListView.EnsureVisible(this.verticalSelectedIndex);
                 }
             }
         }
@@ -433,6 +442,7 @@ namespace Scanner
                     this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
                     this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
+                    this.VerticalListView.EnsureVisible(this.verticalSelectedIndex);
                 }
                 else
                 {
@@ -441,6 +451,7 @@ namespace Scanner
                     this.VerticalPictureBox.Load(this.imagePathList[this.verticalSelectedIndex]);
                     this.VerticalPictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                     this.VerticalListView.Items[this.verticalSelectedIndex].Selected = true;
+                    this.VerticalListView.EnsureVisible(this.verticalSelectedIndex);
                 }
             }
         }
@@ -482,6 +493,7 @@ namespace Scanner
         {
             //遍历窗体中的控件，重新设置控件的值
             foreach (Control con in cons.Controls)
+            {
                 //获取控件的Tag属性值，并分割后存储字符串数组
                 if (con.Tag != null)
                 {
@@ -510,6 +522,7 @@ namespace Scanner
                         SetControls(newx, newy, con);
                     }
                 }
+            }
         }
 
 
@@ -532,6 +545,18 @@ namespace Scanner
         {
             //重置窗口布局
             ReWinformLayout();
+
+            // 重新设置图片大小
+            switch (this.tabControlPreview.SelectedIndex)
+            {
+                case 0:
+                    DefaultShowImage();
+                    break;
+                case 1:
+                    VerticalShowImage();
+                    break;
+            }
+
         }
 
 

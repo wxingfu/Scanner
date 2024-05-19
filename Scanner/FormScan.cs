@@ -28,7 +28,7 @@ namespace Scanner
         private Dictionary<int, List<string>> currentImagePageList = new Dictionary<int, List<string>>();
 
         // 分页页大小
-        private int pageSize = 10;
+        private int pageSize = 20;
 
         //private static AreaSettings AreaSettings = new AreaSettings(Units.Centimeters, 0.1f, 5.7f, 0.1F + 2.6f, 5.7f + 2.6f);
 
@@ -220,6 +220,12 @@ namespace Scanner
         private void DefaultShowImage(int currentPage)
         {
             this.DefaultImageList.Images.Clear();
+
+            // 没数据时，点翻页无用
+            if (this.currentImagePageList.Count == 0)
+            {
+                return;
+            }
 
             // 总页数小于当前页，则取总页数
             if (this.currentImagePageList.Count <= currentPage)

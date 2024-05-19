@@ -39,6 +39,7 @@
             // 
             // btnFrist
             // 
+            this.btnFrist.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnFrist.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnFrist.Location = new System.Drawing.Point(3, 3);
             this.btnFrist.Name = "btnFrist";
@@ -49,6 +50,7 @@
             // 
             // btnPreviou
             // 
+            this.btnPreviou.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnPreviou.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnPreviou.Location = new System.Drawing.Point(54, 3);
             this.btnPreviou.Name = "btnPreviou";
@@ -59,6 +61,7 @@
             // 
             // lblPage
             // 
+            this.lblPage.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.lblPage.AutoSize = true;
             this.lblPage.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.lblPage.Location = new System.Drawing.Point(105, 8);
@@ -69,6 +72,7 @@
             // 
             // btnNext
             // 
+            this.btnNext.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnNext.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnNext.Location = new System.Drawing.Point(169, 3);
             this.btnNext.Name = "btnNext";
@@ -79,6 +83,7 @@
             // 
             // btnLast
             // 
+            this.btnLast.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.btnLast.Font = new System.Drawing.Font("宋体", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
             this.btnLast.Location = new System.Drawing.Point(220, 3);
             this.btnLast.Name = "btnLast";

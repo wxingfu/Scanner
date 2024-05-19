@@ -62,9 +62,9 @@ namespace Scanner
             #endregion
 
 
-            # region 初始化扫描加载
+            # region 加载扫描仪
 
-            InitScannerLoad();
+            LoadScanner();
 
             # endregion
 
@@ -84,7 +84,7 @@ namespace Scanner
         /// <summary>
         /// 初始化扫描仪加载
         /// </summary>
-        private void InitScannerLoad()
+        private void LoadScanner()
         {
             try
             {
@@ -114,7 +114,7 @@ namespace Scanner
                 Enabled = true;
 
                 // 初始化图片显示
-                InitShowImage();
+                DefaultShowImage();
             };
 
 
@@ -185,7 +185,7 @@ namespace Scanner
         /// <summary>
         /// 初始化扫描到的图像显示
         /// </summary>
-        private void InitShowImage()
+        private void DefaultShowImage()
         {
             this.imagePathList = FilePath.GetPictureList(fileBasePath);
             this.currentImagePageList.Clear();
@@ -222,7 +222,7 @@ namespace Scanner
             this.DefaultImageList.Images.Clear();
 
             // 总页数小于当前页，则取总页数
-            if(this.currentImagePageList.Count <= currentPage)
+            if (this.currentImagePageList.Count <= currentPage)
             {
                 currentPage = this.currentImagePageList.Count;
             }

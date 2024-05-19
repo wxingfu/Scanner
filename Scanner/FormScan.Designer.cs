@@ -35,11 +35,11 @@
             this.panelSacnMenu = new System.Windows.Forms.Panel();
             this.tabControlPreview = new System.Windows.Forms.TabControl();
             this.tabPageSmallPreview = new System.Windows.Forms.TabPage();
+            this.DefaultPageControl = new Scanner.Visual.PageControl();
             this.DefaultListView = new System.Windows.Forms.ListView();
             this.DefaultImageList = new System.Windows.Forms.ImageList(this.components);
             this.tabPageVerticalPreview = new System.Windows.Forms.TabPage();
             this.tabPageHorizontalPreView = new System.Windows.Forms.TabPage();
-            this.DefaultPageControl = new Scanner.Visual.PageControl();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -84,8 +84,8 @@
             // splitContainer.Panel2
             // 
             this.splitContainer.Panel2.Controls.Add(this.tabControlPreview);
-            this.splitContainer.Size = new System.Drawing.Size(854, 641);
-            this.splitContainer.SplitterDistance = 172;
+            this.splitContainer.Size = new System.Drawing.Size(1002, 773);
+            this.splitContainer.SplitterDistance = 166;
             this.splitContainer.SplitterWidth = 3;
             this.splitContainer.TabIndex = 3;
             // 
@@ -99,7 +99,7 @@
             this.panelSacnMenu.Location = new System.Drawing.Point(0, 0);
             this.panelSacnMenu.Margin = new System.Windows.Forms.Padding(2);
             this.panelSacnMenu.Name = "panelSacnMenu";
-            this.panelSacnMenu.Size = new System.Drawing.Size(172, 641);
+            this.panelSacnMenu.Size = new System.Drawing.Size(166, 773);
             this.panelSacnMenu.TabIndex = 0;
             // 
             // tabControlPreview
@@ -112,7 +112,7 @@
             this.tabControlPreview.Margin = new System.Windows.Forms.Padding(2);
             this.tabControlPreview.Name = "tabControlPreview";
             this.tabControlPreview.SelectedIndex = 0;
-            this.tabControlPreview.Size = new System.Drawing.Size(679, 641);
+            this.tabControlPreview.Size = new System.Drawing.Size(833, 773);
             this.tabControlPreview.TabIndex = 0;
             // 
             // tabPageSmallPreview
@@ -124,10 +124,21 @@
             this.tabPageSmallPreview.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageSmallPreview.Name = "tabPageSmallPreview";
             this.tabPageSmallPreview.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageSmallPreview.Size = new System.Drawing.Size(671, 615);
+            this.tabPageSmallPreview.Size = new System.Drawing.Size(825, 747);
             this.tabPageSmallPreview.TabIndex = 0;
             this.tabPageSmallPreview.Text = "微缩视图";
             this.tabPageSmallPreview.UseVisualStyleBackColor = true;
+            // 
+            // DefaultPageControl
+            // 
+            this.DefaultPageControl.CurrentPage = 0;
+            this.DefaultPageControl.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.DefaultPageControl.Location = new System.Drawing.Point(2, 711);
+            this.DefaultPageControl.Name = "DefaultPageControl";
+            this.DefaultPageControl.PageSize = 0;
+            this.DefaultPageControl.Size = new System.Drawing.Size(817, 30);
+            this.DefaultPageControl.TabIndex = 1;
+            this.DefaultPageControl.TotalPages = 0;
             // 
             // DefaultListView
             // 
@@ -136,7 +147,7 @@
             this.DefaultListView.LargeImageList = this.DefaultImageList;
             this.DefaultListView.Location = new System.Drawing.Point(2, 2);
             this.DefaultListView.Name = "DefaultListView";
-            this.DefaultListView.Size = new System.Drawing.Size(663, 572);
+            this.DefaultListView.Size = new System.Drawing.Size(817, 703);
             this.DefaultListView.TabIndex = 0;
             this.DefaultListView.UseCompatibleStateImageBehavior = false;
             // 
@@ -153,7 +164,7 @@
             this.tabPageVerticalPreview.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageVerticalPreview.Name = "tabPageVerticalPreview";
             this.tabPageVerticalPreview.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageVerticalPreview.Size = new System.Drawing.Size(886, 772);
+            this.tabPageVerticalPreview.Size = new System.Drawing.Size(671, 615);
             this.tabPageVerticalPreview.TabIndex = 1;
             this.tabPageVerticalPreview.Text = "垂直视图";
             this.tabPageVerticalPreview.UseVisualStyleBackColor = true;
@@ -165,27 +176,17 @@
             this.tabPageHorizontalPreView.Margin = new System.Windows.Forms.Padding(2);
             this.tabPageHorizontalPreView.Name = "tabPageHorizontalPreView";
             this.tabPageHorizontalPreView.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageHorizontalPreView.Size = new System.Drawing.Size(886, 772);
+            this.tabPageHorizontalPreView.Size = new System.Drawing.Size(671, 615);
             this.tabPageHorizontalPreView.TabIndex = 2;
             this.tabPageHorizontalPreView.Text = "水平视图";
             this.tabPageHorizontalPreView.UseVisualStyleBackColor = true;
-            // 
-            // DefaultPageControl
-            // 
-            this.DefaultPageControl.CurrentPage = 0;
-            this.DefaultPageControl.Location = new System.Drawing.Point(171, 580);
-            this.DefaultPageControl.Name = "DefaultPageControl";
-            this.DefaultPageControl.PageSize = 0;
-            this.DefaultPageControl.Size = new System.Drawing.Size(265, 30);
-            this.DefaultPageControl.TabIndex = 1;
-            this.DefaultPageControl.TotalPages = 0;
             // 
             // FormScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Highlight;
-            this.ClientSize = new System.Drawing.Size(854, 641);
+            this.ClientSize = new System.Drawing.Size(1002, 773);
             this.Controls.Add(this.splitContainer);
             this.Name = "FormScan";
             this.Text = "FormScan";

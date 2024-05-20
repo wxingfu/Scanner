@@ -190,7 +190,13 @@ namespace Scanner
         private void DefaultShowImage()
         {
             this.imagePathList.Clear();
-            this.imagePathList = FilePath.GetPictureList(fileBasePath);
+            //this.imagePathList = FilePath.GetPictureList(fileBasePath);
+            DirectoryInfo directoryInfo = new DirectoryInfo(fileBasePath);
+            FileInfo[] fileInfos = directoryInfo.GetFiles();
+            foreach (var item in fileInfos)
+            {
+                this.imagePathList.Add(item.FullName);
+            }
 
             // 没数据不渲染
             if (this.imagePathList.Count <= 0)
@@ -204,6 +210,7 @@ namespace Scanner
             int pageNo = 1;
             foreach (string imagePath in imagePathList)
             {
+                log.Debug("读取到的图片路径: " + imagePath);
                 currentImagePage.Add(imagePath);
                 // 每达到10条数据，就添加到字典中并重置当前组
                 if (currentImagePage.Count == pageSize)
@@ -276,6 +283,7 @@ namespace Scanner
             //增加图片至ListView控件中
             for (int i = 0; i < this.DefaultImageList.Images.Count; i++)
             {
+                //log.Debug("ImageList集合: " + DefaultImageList.Images[i].ToString());
                 ListViewItem listViewItem = new ListViewItem();
                 listViewItem.ImageIndex = i;
                 listViewItem.Text = "" + startIndex;
@@ -329,7 +337,14 @@ namespace Scanner
         private void VerticalShowImage()
         {
             this.imagePathList.Clear();
-            this.imagePathList = FilePath.GetPictureList(fileBasePath);
+            //this.imagePathList = FilePath.GetPictureList(fileBasePath);
+            DirectoryInfo directoryInfo = new DirectoryInfo(fileBasePath);
+            FileInfo[] fileInfos = directoryInfo.GetFiles();
+            foreach (var item in fileInfos)
+            {
+                this.imagePathList.Add(item.FullName);
+            }
+
             // 没数据不渲染
             if (this.imagePathList.Count <= 0)
             {

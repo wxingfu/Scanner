@@ -44,7 +44,9 @@
   <ItemGroup>
     <Compile Include="FilePath.cs" />
     <Compile Include="Naming.cs" />
+    <Compile Include="OSHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScriptUtil.cs" />
     <Compile Include="StringHelper.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,6 +7,6 @@ namespace Scanner.Twain
     public struct Event
     {
         public IntPtr EventPtr;
-        public Message Message;
+        public TWMessage Message;
     }
 }

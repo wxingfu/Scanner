@@ -1,6 +1,6 @@
 ﻿namespace Scanner.Twain
 {
-    public enum Message : short
+    public enum TWMessage : short
     {				
         Null = 0x0000,
         Get = 0x0001,

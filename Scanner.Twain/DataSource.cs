@@ -299,7 +299,7 @@ namespace Scanner.Twain
                 }
             };
 
-            var result = Twain32Native.DsImageLayout(_applicationId, SourceId, DataGroup.Image, DataArgumentType.ImageLayout, Message.Set, imageLayout);
+            var result = Twain32Native.DsImageLayout(_applicationId, SourceId, DataGroup.Image, DataArgumentType.ImageLayout, TWMessage.Set, imageLayout);
 
             if (result != TwainResult.Success)
             {
@@ -440,7 +440,7 @@ namespace Scanner.Twain
         /// <exception cref="TwainException"></exception>
         public void OpenSource()
         {
-            var result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.OpenDS, SourceId);
+            var result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, TWMessage.OpenDS, SourceId);
             log.Debug("OpenDS: " + result);
 
             if (result != TwainResult.Success)
@@ -461,7 +461,7 @@ namespace Scanner.Twain
             ui.ModalUI = 1;
             ui.ParentHand = _messageHook.WindowHandle;
 
-            var result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.EnableDS, ui);
+            var result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, TWMessage.EnableDS, ui);
             log.Debug("EnableDS: " + result);
 
             if (result != TwainResult.Success)
@@ -484,7 +484,7 @@ namespace Scanner.Twain
         {
             var defaultSourceId = new Identity();
             // Attempt to get information about the system default source
-            var result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetDefault, defaultSourceId);
+            var result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, TWMessage.GetDefault, defaultSourceId);
             log.Debug("GetDefault: " + result);
 
             if (result != TwainResult.Success)
@@ -508,7 +508,7 @@ namespace Scanner.Twain
         {
             var defaultSourceId = new Identity();
             // Show the TWAIN interface to allow the user to select a source
-            Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.UserSelect, defaultSourceId);
+            Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, TWMessage.UserSelect, defaultSourceId);
 
             return new DataSource(applicationId, defaultSourceId, messageHook);
         }
@@ -526,7 +526,7 @@ namespace Scanner.Twain
             Identity id = new Identity();
 
             // Get the first source
-            TwainResult result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetFirst, id);
+            TwainResult result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, TWMessage.GetFirst, id);
             log.Debug("Get the first source: " + result);
             
             if (result == TwainResult.EndOfList)
@@ -545,7 +545,7 @@ namespace Scanner.Twain
             while (true)
             {
                 // Get the next source
-                result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.GetNext, id);
+                result = Twain32Native.DsmIdentity(applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, TWMessage.GetNext, id);
                 log.Debug("Get the next source: " + result);
 
                 if (result == TwainResult.EndOfList)
@@ -604,12 +604,12 @@ namespace Scanner.Twain
             if (SourceId.Id != 0)
             {
                 UserInterface userInterface = new UserInterface();
-                TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, Message.DisableDS, userInterface);
+                TwainResult result = Twain32Native.DsUserInterface(_applicationId, SourceId, DataGroup.Control, DataArgumentType.UserInterface, TWMessage.DisableDS, userInterface);
                 log.Debug("DisableDS: " + result);
 
                 if (result != TwainResult.Failure)
                 {
-                    result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, Message.CloseDS, SourceId);
+                    result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, TWMessage.CloseDS, SourceId);
                     log.Debug("CloseDS: " + result);
                 }
             }

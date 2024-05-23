@@ -28,7 +28,7 @@ namespace Scanner.Twain
             var oneValue = new CapabilityOneValue(_twainType, 0);
             var twainCapability = TwainCapability.From(_capability, oneValue);
 
-            var result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Get, twainCapability);
+            var result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, TWMessage.Get, twainCapability);
 
             if (result != TwainResult.Success)
             {
@@ -68,7 +68,7 @@ namespace Scanner.Twain
             var oneValue = new CapabilityOneValue(_twainType, rawValue);
             var twainCapability = TwainCapability.From(_capability, oneValue);
 
-            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, Message.Set, twainCapability);
+            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, TWMessage.Set, twainCapability);
             
             if (result != TwainResult.Success)
             {

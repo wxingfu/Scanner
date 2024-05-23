@@ -40,7 +40,7 @@ namespace Scanner.Twain
             _eventMessage.EventPtr = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WindowsMessage)));
 
             // Initialise the data source manager
-            TwainResult result = Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, Message.OpenDSM, ref windowHandle);
+            TwainResult result = Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, TWMessage.OpenDSM, ref windowHandle);
             log.Debug("OpenDSM: " + result);
 
             if (result == TwainResult.Success)
@@ -126,7 +126,7 @@ namespace Scanner.Twain
             Marshal.StructureToPtr(message, _eventMessage.EventPtr, false);
             _eventMessage.Message = 0;
 
-            TwainResult result = Twain32Native.DsEvent(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.Event, Message.ProcessEvent, ref _eventMessage);
+            TwainResult result = Twain32Native.DsEvent(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.Event, TWMessage.ProcessEvent, ref _eventMessage);
             log.Debug("Get EventMessage: " + result);
 
             if (result == TwainResult.NotDSEvent)
@@ -137,7 +137,7 @@ namespace Scanner.Twain
 
             switch (_eventMessage.Message)
             {
-                case Message.XFerReady:
+                case TWMessage.XFerReady:
                     Exception exception = null;
                     try
                     {
@@ -150,13 +150,13 @@ namespace Scanner.Twain
                     CloseDsAndCompleteScanning(exception);
                     break;
 
-                case Message.CloseDS:
-                case Message.CloseDSOK:
-                case Message.CloseDSReq:
+                case TWMessage.CloseDS:
+                case TWMessage.CloseDSOK:
+                case TWMessage.CloseDSReq:
                     CloseDsAndCompleteScanning(null);
                     break;
 
-                case Message.DeviceEvent:
+                case TWMessage.DeviceEvent:
                     break;
 
                 default:
@@ -185,7 +185,7 @@ namespace Scanner.Twain
 
                     // Get the image info
                     ImageInfo imageInfo = new ImageInfo();
-                    result = Twain32Native.DsImageInfo(ApplicationId, DataSource.SourceId, DataGroup.Image, DataArgumentType.ImageInfo, Message.Get, imageInfo);
+                    result = Twain32Native.DsImageInfo(ApplicationId, DataSource.SourceId, DataGroup.Image, DataArgumentType.ImageInfo, TWMessage.Get, imageInfo);
                     log.Debug("Get the image: " + result);
 
                     if (result != TwainResult.Success)
@@ -195,7 +195,7 @@ namespace Scanner.Twain
                     }
 
                     // Transfer the image from the device
-                    result = Twain32Native.DsImageTransfer(ApplicationId, DataSource.SourceId, DataGroup.Image, DataArgumentType.ImageNativeXfer, Message.Get, ref hbitmap);
+                    result = Twain32Native.DsImageTransfer(ApplicationId, DataSource.SourceId, DataGroup.Image, DataArgumentType.ImageNativeXfer, TWMessage.Get, ref hbitmap);
                     log.Debug("Transfer the image: " + result);
 
                     if (result != TwainResult.XferDone)
@@ -205,7 +205,7 @@ namespace Scanner.Twain
                     }
 
                     // End pending transfers
-                    result = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.EndXfer, pendingTransfer);
+                    result = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, TWMessage.EndXfer, pendingTransfer);
                     log.Debug("End pending transfers: " + result);
 
                     if (result != TwainResult.Success)
@@ -236,7 +236,7 @@ namespace Scanner.Twain
             finally
             {
                 // Reset any pending transfers
-                result = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, Message.Reset, pendingTransfer);
+                result = Twain32Native.DsPendingTransfer(ApplicationId, DataSource.SourceId, DataGroup.Control, DataArgumentType.PendingXfers, TWMessage.Reset, pendingTransfer);
                 log.Debug("Reset: " + result);
             }
         }
@@ -287,7 +287,7 @@ namespace Scanner.Twain
                 if (ApplicationId.Id != 0)
                 {
                     // Close down the data source manager
-                    Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, Message.CloseDSM, ref windowHandle);
+                    Twain32Native.DsmParent(ApplicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Parent, TWMessage.CloseDSM, ref windowHandle);
                 }
 
                 ApplicationId.Id = 0;
@@ -298,7 +298,7 @@ namespace Scanner.Twain
         {
             Status status = new Status();
 
-            Twain32Native.DsmStatus(applicationId, sourceId, DataGroup.Control, DataArgumentType.Status, Message.Get, status);
+            Twain32Native.DsmStatus(applicationId, sourceId, DataGroup.Control, DataArgumentType.Status, TWMessage.Get, status);
 
             ConditionCode conditionCode = status.ConditionCode;
             log.Debug("Get ConditionCode: " + conditionCode);

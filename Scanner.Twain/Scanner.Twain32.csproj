@@ -78,7 +78,7 @@
     <Compile Include="Twain32Native\ImageInfo.cs" />
     <Compile Include="Twain32Native\ImageLayout.cs" />
     <Compile Include="Twain32Native\Language.cs" />
-    <Compile Include="Twain32Native\Message.cs" />
+    <Compile Include="Twain32Native\TWMessage.cs" />
     <Compile Include="Twain32Native\Orientation.cs" />
     <Compile Include="Twain32Native\PageType.cs" />
     <Compile Include="Twain32Native\PendingXfers.cs" />

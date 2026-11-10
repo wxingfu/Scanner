@@ -6,7 +6,7 @@ namespace Scanner.Twain
 {
     public class DataSource : IDisposable
     {
-        private static ILog log = LogManager.GetLogger(typeof(DataSourceManager));
+        private static ILog log = LogManager.GetLogger(typeof(DataSource));
 
         Identity _applicationId;
 
@@ -573,15 +573,18 @@ namespace Scanner.Twain
         public static DataSource GetSource(string sourceProductName, Identity applicationId, IWindowsMessageHook messageHook)
         {
             // A little slower than it could be, if enumerating unnecessary sources is slow. But less code duplication.
+            DataSource matched = null;
             foreach (var source in GetAllSources(applicationId, messageHook))
             {
                 if (sourceProductName.Equals(source.SourceId.ProductName, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    return source;
+                    matched = source;
+                    break;
                 }
+                source.Dispose();
             }
 
-            return null;
+            return matched;
         }
 
 
@@ -593,10 +596,7 @@ namespace Scanner.Twain
 
         protected void Dispose(bool disposing)
         {
-            if (disposing)
-            {
-                Close();
-            }
+            Close();
         }
 
         public void Close()
@@ -612,6 +612,7 @@ namespace Scanner.Twain
                     result = Twain32Native.DsmIdentity(_applicationId, IntPtr.Zero, DataGroup.Control, DataArgumentType.Identity, TWMessage.CloseDS, SourceId);
                     log.Debug("CloseDS: " + result);
                 }
+                SourceId.Id = 0;
             }
         }
 

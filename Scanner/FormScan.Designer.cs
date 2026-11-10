@@ -44,7 +44,6 @@
             this.VerticalBtnPanel = new System.Windows.Forms.Panel();
             this.VerticalBtnNext = new System.Windows.Forms.Button();
             this.VerticalBtnPreviou = new System.Windows.Forms.Button();
-            this.tabPageHorizontalPreView = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer)).BeginInit();
             this.splitContainer.Panel1.SuspendLayout();
             this.splitContainer.Panel2.SuspendLayout();
@@ -114,7 +113,6 @@
             // 
             this.tabControlPreview.Controls.Add(this.tabPageSmallPreview);
             this.tabControlPreview.Controls.Add(this.tabPageVerticalPreview);
-            this.tabControlPreview.Controls.Add(this.tabPageHorizontalPreView);
             this.tabControlPreview.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControlPreview.Location = new System.Drawing.Point(0, 0);
             this.tabControlPreview.Margin = new System.Windows.Forms.Padding(2);
@@ -232,18 +230,6 @@
             this.VerticalBtnPreviou.UseVisualStyleBackColor = true;
             this.VerticalBtnPreviou.Click += new System.EventHandler(this.VerticalBtnPreviou_Click);
             // 
-            // tabPageHorizontalPreView
-            // 
-            this.tabPageHorizontalPreView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.tabPageHorizontalPreView.Location = new System.Drawing.Point(4, 22);
-            this.tabPageHorizontalPreView.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPageHorizontalPreView.Name = "tabPageHorizontalPreView";
-            this.tabPageHorizontalPreView.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPageHorizontalPreView.Size = new System.Drawing.Size(825, 704);
-            this.tabPageHorizontalPreView.TabIndex = 2;
-            this.tabPageHorizontalPreView.Text = "水平视图";
-            this.tabPageHorizontalPreView.UseVisualStyleBackColor = true;
-            // 
             // FormScan
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -275,7 +261,6 @@
         private System.Windows.Forms.TabControl tabControlPreview;
         private System.Windows.Forms.TabPage tabPageSmallPreview;
         private System.Windows.Forms.TabPage tabPageVerticalPreview;
-        private System.Windows.Forms.TabPage tabPageHorizontalPreView;
         private System.Windows.Forms.ListView DefaultListView;
         private System.Windows.Forms.ImageList DefaultImageList;
         private Visual.PageControl DefaultPageControl;

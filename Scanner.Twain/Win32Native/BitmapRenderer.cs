@@ -38,17 +38,15 @@ namespace Scanner.Twain
                 _bitmapInfo.SizeImage = ((((_bitmapInfo.Width * _bitmapInfo.BitCount) + 31) & ~31) >> 3) * _bitmapInfo.Height;
             }
 
-            // The following code only works on x86
-            Debug.Assert(Marshal.SizeOf(typeof(IntPtr)) == 4);
-
             int pixelInfoPointer = _bitmapInfo.ClrUsed;
             if ((pixelInfoPointer == 0) && (_bitmapInfo.BitCount <= 8))
             {
                 pixelInfoPointer = 1 << _bitmapInfo.BitCount;
             }
 
-            pixelInfoPointer = (pixelInfoPointer * 4) + _bitmapInfo.Size + _bitmapPointer.ToInt32();
-            _pixelInfoPointer = new IntPtr(pixelInfoPointer);
+            // 使用 IntPtr 运算，避免在 64 位进程下发生指针截断
+            long pixelInfoOffset = (long)pixelInfoPointer * 4 + _bitmapInfo.Size;
+            _pixelInfoPointer = IntPtr.Add(_bitmapPointer, (int)pixelInfoOffset);
         }
 
         ~BitmapRenderer()

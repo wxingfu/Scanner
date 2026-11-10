@@ -30,6 +30,10 @@ namespace Scanner
         // 分页页大小
         private int pageSize = 20;
 
+        // 缩略图宽度（等比缩放基准）
+        private const int DefaultThumbWidth = 80;
+        private const int VerticalThumbWidth = 60;
+
         //private static AreaSettings AreaSettings = new AreaSettings(Units.Centimeters, 0.1f, 5.7f, 0.1F + 2.6f, 5.7f + 2.6f);
 
         // Twain SDK
@@ -45,7 +49,7 @@ namespace Scanner
             # region 初始化翻页控件
 
             this.DefaultPageControl.CurrentPage = 1;
-            this.DefaultPageControl.PageSize = 10;
+            this.DefaultPageControl.PageSize = 20;
             this.DefaultPageControl.TotalPages = 1;
             this.DefaultPageControl.ClickPageButtonEvent += DefaultPageControl_ClickPageButtonEvent;
 
@@ -58,6 +62,7 @@ namespace Scanner
             y = Height;
             SetTag(this);
             this.Resize += FormScan_Resize;
+            this.FormClosing += FormScan_FormClosing;
 
             #endregion
 
@@ -92,26 +97,35 @@ namespace Scanner
             }
             catch (Exception ex)
             {
-                //MessageBox.Show("未连接到扫描仪");
+                log.Error("初始化扫描仪失败", ex);
+                MessageBox.Show("初始化扫描仪失败：" + ex.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
 
             _twain.TransferImage += delegate (Object sender, TransferImageEventArgs args)
             {
-                Bitmap image = args.Image;
-                if (image != null)
+                using (Bitmap image = args.Image)
                 {
-                    string imageName = Guid.NewGuid().ToString() + imageSuffix;
-                    string imagePath = fileBasePath + imageName;
-                    log.Info("basePath: " + fileBasePath + ", imageName: " + imageName + ", imagePath: " + imagePath);
+                    if (image != null)
+                    {
+                        string imageName = Guid.NewGuid().ToString() + imageSuffix;
+                        string imagePath = fileBasePath + imageName;
+                        log.Info("basePath: " + fileBasePath + ", imageName: " + imageName + ", imagePath: " + imagePath);
 
-                    image.Save(imagePath);
+                        image.Save(imagePath, ImageFormat.Tiff);
+                    }
                 }
             };
 
-            _twain.ScanningComplete += delegate
+            _twain.ScanningComplete += delegate (object sender, ScanningCompleteEventArgs args)
             {
                 Enabled = true;
+
+                if (args != null && args.Exception != null)
+                {
+                    log.Error("扫描完成但发生异常", args.Exception);
+                    MessageBox.Show("扫描出错：" + args.Exception.Message, "错误", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
 
                 // tab页切回默认显示
                 tabControlPreview.SelectedIndex = 0;
@@ -138,19 +152,23 @@ namespace Scanner
         /// <param name="e"></param>
         private void bntScan_Click(object sender, EventArgs e)
         {
-            Enabled = false;
+            if (_twain == null)
+            {
+                MessageBox.Show("扫描仪未初始化，请重启程序", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
             //获取选中的数据源
             object item = cbbDataSource.SelectedItem;
             string sourceName = cbbDataSource.GetItemText(item);
             if (string.IsNullOrEmpty(sourceName))
             {
-                MessageBox.Show("没有可用的扫描仪");
+                MessageBox.Show("没有可用的扫描仪", "提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
-            log.Info("选中的数据源是: " + sourceName);
 
-            _twain.SelectSource(sourceName);
+            Enabled = false;
+            log.Info("选中的数据源是: " + sourceName);
 
             ScanSettings _settings = new ScanSettings();
             _settings.UseDocumentFeeder = true;
@@ -169,6 +187,7 @@ namespace Scanner
 
             try
             {
+                _twain.SelectSource(sourceName);
                 log.Info("ScanSettings: " + _settings.ToString());
                 _twain.StartScanning(_settings);
             }
@@ -180,6 +199,15 @@ namespace Scanner
         }
 
         # endregion
+
+        private void FormScan_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (_twain != null)
+            {
+                _twain.Dispose();
+                _twain = null;
+            }
+        }
 
 
         # region 默认的图像显示和翻页
@@ -212,7 +240,7 @@ namespace Scanner
             {
                 log.Debug("读取到的图片路径: " + imagePath);
                 currentImagePage.Add(imagePath);
-                // 每达到10条数据，就添加到字典中并重置当前组
+                // 每达到 pageSize 条数据，就添加到字典中并重置当前组
                 if (currentImagePage.Count == pageSize)
                 {
                     this.currentImagePageList.Add(pageNo, currentImagePage);
@@ -240,7 +268,7 @@ namespace Scanner
         {
             this.DefaultImageList.Images.Clear();
             this.DefaultImageList.ColorDepth = ColorDepth.Depth24Bit;
-            this.DefaultImageList.ImageSize = new Size((int)(80 * this.Width / this.x), (int)(80 * Math.Sqrt(2) * this.Width / this.x));
+            this.DefaultImageList.ImageSize = new Size((int)(DefaultThumbWidth * this.Width / this.x), (int)(DefaultThumbWidth * Math.Sqrt(2) * this.Width / this.x));
 
             // 没数据时，点翻页无用
             if (this.currentImagePageList.Count == 0)
@@ -255,12 +283,14 @@ namespace Scanner
             }
 
             List<string> pageImageList = this.currentImagePageList[currentPage];
+            // 先绑定 ImageList 再 Add，确保缩略图被复制到 ListView 内部存储（深度 24 位下为延迟复制）
+            this.DefaultListView.LargeImageList = this.DefaultImageList;
             pageImageList.ForEach(image =>
             {
-                Image img = Image.FromFile(image);
-                this.DefaultImageList.Images.Add(img);
-                // 释放内存，防止溢出
-                img.Dispose();
+                using (Image img = Image.FromFile(image))
+                {
+                    this.DefaultImageList.Images.Add(img);
+                }
             });
 
             int startIndex = 0;
@@ -276,7 +306,6 @@ namespace Scanner
             }
 
             this.DefaultListView.Items.Clear();
-            this.DefaultListView.LargeImageList = this.DefaultImageList;
             this.DefaultListView.View = View.LargeIcon;
             //开始绑定
             this.DefaultListView.BeginUpdate();
@@ -353,17 +382,18 @@ namespace Scanner
 
             this.DefaultImageList.Images.Clear();
             this.DefaultImageList.ColorDepth = ColorDepth.Depth24Bit;
-            this.DefaultImageList.ImageSize = new Size((int)(60 * this.Width / this.x), (int)(60 * Math.Sqrt(2) * this.Width / this.x));
+            this.DefaultImageList.ImageSize = new Size((int)(VerticalThumbWidth * this.Width / this.x), (int)(VerticalThumbWidth * Math.Sqrt(2) * this.Width / this.x));
+            this.VerticalListView.LargeImageList = this.DefaultImageList;
 
             this.imagePathList.ForEach(imagePath =>
             {
-                Image tmpImage = Image.FromFile(imagePath);
-                this.DefaultImageList.Images.Add(tmpImage);
-                tmpImage.Dispose();
+                using (Image tmpImage = Image.FromFile(imagePath))
+                {
+                    this.DefaultImageList.Images.Add(tmpImage);
+                }
             });
 
             this.VerticalListView.Items.Clear();
-            this.VerticalListView.LargeImageList = this.DefaultImageList;
             this.VerticalListView.View = View.LargeIcon;
 
             //开始绑定
@@ -529,8 +559,6 @@ namespace Scanner
                     {
                         con.Font = new Font(con.Font.Name, currentSize, con.Font.Style, con.Font.Unit);
                     }
-
-                    con.Focus();
 
                     if (con.Controls.Count > 0)
                     {

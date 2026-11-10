@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Scanner.Twain
 {
-    public class TwainControl
+    public class TwainControl : IDisposable
     { 
         private DataSourceManager _dataSourceManager;
 
@@ -99,6 +99,13 @@ namespace Scanner.Twain
             return result;
         }
 
-
+        public void Dispose()
+        {
+            if (_dataSourceManager != null)
+            {
+                _dataSourceManager.Dispose();
+                _dataSourceManager = null;
+            }
+        }
     }
 }

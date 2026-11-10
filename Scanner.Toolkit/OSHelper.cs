@@ -35,7 +35,7 @@ namespace Scanner.Toolkit
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
             return true;
         }
@@ -119,7 +119,7 @@ namespace Scanner.Toolkit
                 if (!install)
                     str2 = string.Format("/s /u \"{0}\"", (object)localFile);
                 string str3 = str2;
-                return ExecCommand(str1 + str3, false) != "";
+                return ExecCommand(str1 + " " + str3, false) != "";
             }
             catch (Exception ex)
             {
@@ -170,7 +170,7 @@ namespace Scanner.Toolkit
             }
             catch (Exception ex)
             {
-                throw ex;
+                throw;
             }
             return process1;
         }
@@ -210,34 +210,6 @@ namespace Scanner.Toolkit
                 Console.WriteLine("打开键值失败：" + ex.Message);
             }
             return flag;
-        }
-
-        public static void AddSecurityControll2Folder(string dirPath)
-        {
-            DirectoryInfo directoryInfo = new DirectoryInfo(dirPath);
-            DirectorySecurity accessControl = directoryInfo.GetAccessControl(AccessControlSections.All);
-            FileSystemAccessRule rule1 = new FileSystemAccessRule("Everyone", FileSystemRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow);
-            FileSystemAccessRule rule2 = new FileSystemAccessRule("Users", FileSystemRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow);
-            bool modified = false;
-            accessControl.ModifyAccessRule(AccessControlModification.Add, (AccessRule)rule1, out modified);
-            accessControl.ModifyAccessRule(AccessControlModification.Add, (AccessRule)rule2, out modified);
-            directoryInfo.SetAccessControl(accessControl);
-        }
-
-        public static void AddSecurityControll2Folder()
-        {
-            try
-            {
-                Console.WriteLine("正在设置目录控制权限....");
-                string dataPath = FilePath.GetDataPath();
-                AddSecurityControll2Folder(dataPath);
-                FilePath.GetAppPath();
-                AddSecurityControll2Folder(dataPath);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("设置用户控制权限失败！错误原因： " + ex.Message);
-            }
         }
 
         public static bool Ping(string address, int port)

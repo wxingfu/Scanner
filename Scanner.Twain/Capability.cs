@@ -26,22 +26,23 @@ namespace Scanner.Twain
         public BasicCapabilityResult GetBasicValue()
         {
             var oneValue = new CapabilityOneValue(_twainType, 0);
-            var twainCapability = TwainCapability.From(_capability, oneValue);
-
-            var result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, TWMessage.Get, twainCapability);
-
-            if (result != TwainResult.Success)
+            using (var twainCapability = TwainCapability.From(_capability, oneValue))
             {
-                var conditionCode = GetStatus();
-                log.Debug(string.Format("Failed to get capability:{0} reason: {1}",  _capability, conditionCode));
-                return new BasicCapabilityResult()
-                {
-                    ConditionCode = conditionCode,
-                    ErrorCode = result
-                };
-            }
+                var result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, TWMessage.Get, twainCapability);
 
-            twainCapability.ReadBackValue();
+                if (result != TwainResult.Success)
+                {
+                    var conditionCode = GetStatus();
+                    log.Debug(string.Format("Failed to get capability:{0} reason: {1}", _capability, conditionCode));
+                    return new BasicCapabilityResult()
+                    {
+                        ConditionCode = conditionCode,
+                        ErrorCode = result
+                    };
+                }
+
+                twainCapability.ReadBackValue();
+            }
 
             return new BasicCapabilityResult()
             {
@@ -62,36 +63,37 @@ namespace Scanner.Twain
 
         protected void SetValue<T>(T value)
         {
-            log.Debug(string.Format("Attempting to set capabilities:{0}, value:{1}, type:{1}",  _capability, value, _twainType));
+            log.Debug(string.Format("Attempting to set capabilities:{0}, value:{1}, type:{2}", _capability, value, _twainType));
 
             int rawValue = Convert.ToInt32(value);
             var oneValue = new CapabilityOneValue(_twainType, rawValue);
-            var twainCapability = TwainCapability.From(_capability, oneValue);
-
-            TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, TWMessage.Set, twainCapability);
-            
-            if (result != TwainResult.Success)
+            using (var twainCapability = TwainCapability.From(_capability, oneValue))
             {
-                log.Debug(string.Format("Failed to set capabilities:{0}, value:{1}, type:{1}, result:{2}", _capability, value, _twainType, result));
+                TwainResult result = Twain32Native.DsCapability(_applicationId, _sourceId, DataGroup.Control, DataArgumentType.Capability, TWMessage.Set, twainCapability);
 
-                if (result == TwainResult.Failure)
+                if (result != TwainResult.Success)
                 {
-                    var conditionCode = GetStatus();
-                    log.Error(string.Format("Failed to set capabilites:{0} reason: {1}", _capability, conditionCode));
-                    throw new TwainException("Failed to set capability.", result, conditionCode);
-                }
-                else if (result == TwainResult.CheckStatus)
-                {
-                    log.Debug("Value changed but not to requested value");
+                    log.Debug(string.Format("Failed to set capabilities:{0}, value:{1}, type:{2}, result:{3}", _capability, value, _twainType, result));
+
+                    if (result == TwainResult.Failure)
+                    {
+                        var conditionCode = GetStatus();
+                        log.Error(string.Format("Failed to set capabilites:{0} reason: {1}", _capability, conditionCode));
+                        throw new TwainException("Failed to set capability.", result, conditionCode);
+                    }
+                    else if (result == TwainResult.CheckStatus)
+                    {
+                        log.Debug("Value changed but not to requested value");
+                    }
+                    else
+                    {
+                        throw new TwainException("Failed to set capability.", result);
+                    }
                 }
                 else
                 {
-                    throw new TwainException("Failed to set capability.", result);
+                    log.Debug("Set capabilities successfully");
                 }
-            }
-            else
-            {
-                log.Debug("Set capabilities successfully");
             }
         }
 

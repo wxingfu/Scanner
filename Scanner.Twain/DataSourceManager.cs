@@ -92,7 +92,7 @@ namespace Scanner.Twain
             {
                 DataSource.Close();
                 EndingScan();
-                throw e;
+                throw;
             }
             finally
             {
@@ -106,7 +106,7 @@ namespace Scanner.Twain
 
         protected IntPtr FilterMessage(IntPtr hwnd, int msg, IntPtr wParam, IntPtr lParam, ref bool handled)
         {
-            if (DataSource.SourceId.Id == 0)
+            if (DataSource == null || DataSource.SourceId.Id == 0)
             {
                 handled = false;
                 return IntPtr.Zero;
@@ -249,8 +249,9 @@ namespace Scanner.Twain
             {
                 ScanningComplete(this, new ScanningCompleteEventArgs(exception));
             }
-            catch
+            catch (Exception ex)
             {
+                log.Error("ScanningComplete 事件处理器抛出异常", ex);
             }
         }
 
@@ -267,7 +268,11 @@ namespace Scanner.Twain
 
         public void SelectSource(DataSource dataSource)
         {
-            DataSource.Dispose();
+            DataSource?.Dispose();
+            if (dataSource == null)
+            {
+                throw new TwainException("未找到指定的扫描仪数据源");
+            }
             DataSource = dataSource;
         }
 
@@ -282,7 +287,8 @@ namespace Scanner.Twain
             Marshal.FreeHGlobal(_eventMessage.EventPtr);
             if (disposing)
             {
-                DataSource.Dispose();
+                EndingScan();
+                DataSource?.Dispose();
                 IntPtr windowHandle = _messageHook.WindowHandle;
                 if (ApplicationId.Id != 0)
                 {

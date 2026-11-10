@@ -58,35 +58,5 @@ namespace Scanner.Toolkit
             return OSHelper.ExecProcess(appname, args, ProcessWindowStyle.Hidden, false, IsWaitExit);
         }
 
-        public static void RegUrlProtocol()
-        {
-            try
-            {
-                string str = FilePath.PathCombine(FilePath.GetAppPath(), "Scanner.exe");
-                RegistryKey registryKey = Registry.ClassesRoot.OpenSubKey("lisscanner", true) ?? Registry.ClassesRoot.CreateSubKey("lisscanner");
-                registryKey.SetValue("URL Protocol", str);
-                registryKey.CreateSubKey("DefaultIcon").SetValue("", string.Format("{0},0", str), RegistryValueKind.ExpandString);
-                registryKey.CreateSubKey("shell\\open\\command").SetValue("", string.Format("\"{0}\" \"%1\"", str), RegistryValueKind.ExpandString);
-                registryKey.Close();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("写键值失败！ 错误原因：" + ex.Message);
-            }
-        }
-
-        public static void UnRegUrlProtocol()
-        {
-            try
-            {
-                if (Registry.ClassesRoot.OpenSubKey("lisscanner", false) == null)
-                    return;
-                Registry.ClassesRoot.DeleteSubKeyTree("lisscanner");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine("删除键值失败， 错误原因：" + ex.Message);
-            }
-        }
     }
 }
